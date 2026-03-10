@@ -1,46 +1,114 @@
 "use client"
 
 import Link from "next/link"
-import { useAuth } from "@/context/AuthContext"
+import { usePathname } from "next/navigation"
+import {
+  LayoutDashboard,
+  BookOpen,
+  BarChart3,
+  Upload,
+  ClipboardCheck
+} from "lucide-react"
 
 interface SidebarProps {
-    role: "student" | "tutor" | "admin"
+  role: "student" | "tutor" | "admin"
 }
 
 export default function Sidebar({ role }: SidebarProps) {
-    const links = {
-        student: [
-            { href: "/student/dashboard", label: "Dashboard"},
-            { href: "/student/tests", label: "Tests" },
-        ],
+  const pathname = usePathname()
 
-        tutor: [
-            { href: "/tutor/dashboard", label: "Dashboard"},
-            { href: "/tutor/analytics", label: "Analytics" },
-        ],
-        admin: [
-            { href: "/admin/review", label: "Review Questions"},
-            { href: "/admin/upload", label: "Upload CSV" },
-        ],
-    }
+  const links = {
+    student: [
+      {
+        href: "/student/dashboard",
+        label: "Dashboard",
+        icon: LayoutDashboard
+      },
+      {
+        href: "/student/tests",
+        label: "Tests",
+        icon: BookOpen
+      }
+    ],
 
-    return (
-        <div className="w-60 bg-gray-900 text-white min-h-screen p-4">
-            <h2 className="text-xl font-bold mb-6 capitalize">
-                {role} Panel
-            </h2>
+    tutor: [
+      {
+        href: "/tutor/dashboard",
+        label: "Dashboard",
+        icon: LayoutDashboard
+      },
+      {
+        href: "/tutor/analytics",
+        label: "Analytics",
+        icon: BarChart3
+      }
+    ],
 
-            <div className="space-y-">
-                {links[role].map((link) => (
-                    <Link
-                        key={link.href}
-                        href={link.href}
-                        className="block hover:bg-gray-700 p-2 rounded"
-                    >
-                        {link.label}
-                    </Link>
-                ))}
-            </div>
-        </div>
-    )
+    admin: [
+      {
+        href: "/admin/review",
+        label: "Review Queue",
+        icon: ClipboardCheck
+      },
+      {
+        href: "/admin/upload",
+        label: "Upload Questions",
+        icon: Upload
+      }
+    ]
+  }
+
+  return (
+    <aside className="w-64 bg-white border-r flex flex-col">
+
+      {/* Brand */}
+      <div className="h-16 flex items-center px-6 border-b">
+        <h1 className="text-lg font-semibold tracking-tight">
+          Hammet
+        </h1>
+      </div>
+
+      {/* Navigation */}
+      <nav className="flex-1 p-4 space-y-1">
+
+        {links[role].map((link) => {
+
+          const Icon = link.icon
+          const active = pathname === link.href
+
+          return (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`
+                flex items-center gap-3
+                px-3 py-2 rounded-lg
+                text-sm font-medium
+                transition
+
+                ${
+                  active
+                    ? "bg-blue-600 text-white"
+                    : "text-gray-700 hover:bg-gray-100"
+                }
+              `}
+            >
+
+              <Icon size={18} />
+
+              {link.label}
+
+            </Link>
+          )
+        })}
+
+      </nav>
+
+      {/* Footer */}
+      <div className="p-4 border-t text-xs text-gray-400">
+        Hammet Labs
+      </div>
+
+    </aside>
+  )
 }
