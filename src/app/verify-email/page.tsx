@@ -1,14 +1,17 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useSearchParams } from "next/navigation"
+import { useSearchParams, useRouter } from "next/navigation"
+import { saveToken } from "@/utils/token"
 
 export default function VerifyEmailPage() {
 
   const searchParams = useSearchParams()
+  const router = useRouter()
+
   const token = searchParams.get("token")
 
-  const [status, setStatus] = useState("Verifying...")
+  const [status, setStatus] = useState("Verifying your email...")
 
   useEffect(() => {
 
@@ -29,7 +32,27 @@ export default function VerifyEmailPage() {
           throw new Error()
         }
 
-        setStatus("Email verified successfully")
+        const data = await res.json()
+
+        saveToken(data.access_token)
+
+        setStatus("Email verified. Redirecting...")
+
+        const payload = JSON.parse(
+          atob(data.access_token.split(".")[1])
+        )
+
+        if (payload.role === "student") {
+          router.push("/student/dashboard")
+        }
+
+        if (payload.role === "tutor") {
+          router.push("/tutor/dashboard")
+        }
+
+        if (payload.role === "admin") {
+          router.push("/admin/review")
+        }
 
       } catch {
         setStatus("Verification failed or link expired")
