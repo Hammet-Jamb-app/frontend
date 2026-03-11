@@ -7,7 +7,8 @@ import {
   BookOpen,
   BarChart3,
   Upload,
-  ClipboardCheck
+  ClipboardCheck,
+  FilePlus
 } from "lucide-react"
 
 interface SidebarProps {
@@ -54,6 +55,11 @@ export default function Sidebar({ role }: SidebarProps) {
         href: "/admin/upload",
         label: "Upload Questions",
         icon: Upload
+      },
+      {
+        href: "/admin/generate",
+        label: "Generate Test",
+        icon: FilePlus
       }
     ]
   }
