@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { registerStudent } from "@/services/auth.service"
 import { useSearchParams } from "next/navigation"
+import { validatePassword } from "@/utils/password"
 
 export default function StudentRegisterPage() {
   const searchParams = useSearchParams()
@@ -22,6 +23,13 @@ export default function StudentRegisterPage() {
     if (!inviteToken) {
       setError("Invalid invite link")
       return
+    }
+
+    const passwordError = validatePassword(password)
+
+    if (passwordError) {
+      setError(passwordError)
+      return 
     }
 
     setLoading(true)

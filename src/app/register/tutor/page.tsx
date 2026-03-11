@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { registerTutor } from "@/services/auth.service"
+import { validatePassword } from "@/utils/password"
 
 export default function TutorRegisterPage() {
     const [email, setEmail] = useState("")
@@ -16,6 +17,13 @@ export default function TutorRegisterPage() {
         e.preventDefault()
         setLoading(true)
         setError("")
+
+        const passwordError = validatePassword(password)
+
+        if (passwordError) {
+            setError(passwordError)
+            return 
+        }
 
         try {
             const res = await registerTutor(

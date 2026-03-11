@@ -41,7 +41,7 @@ export const registerTutor = async(
 
     if (!response.ok) {
         const error = await response.json()
-        throw new Error(error.detail || "Registration failed")
+        throw new Error(`Registration failed: ${error.message}` || "Unknown error")
     }
     return response.json()
 }
@@ -68,7 +68,7 @@ export const registerStudent = async (
 
     if (!response.ok) {
         const error = await response.json()
-        throw new Error(error.detail || "Registration failed")
+        throw new Error(`Registration failed: ${error.message}` || "Unknown error")
     }
 
     return response.json()

@@ -1,6 +1,32 @@
+"use client"
+
 import Link from "next/link"
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { useAuth } from "@/context/AuthContext"
 
 export default function HomePage() {
+
+  const { role } = useAuth()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!role) return
+
+    if (role === "student") {
+      router.replace("/student/dashboard")
+    }
+
+    if (role === "tutor") {
+      router.replace("/tutor/dashboard")
+    }
+
+    if (role === "admin") {
+      router.replace("/admin/review")
+    }
+
+  }, [role])
+
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col">
 
@@ -11,7 +37,7 @@ export default function HomePage() {
           Hammet
         </h1>
 
-        <div className="flex items-center gap-4">
+        <div className="flex gap-4">
 
           <Link
             href="/login"
@@ -31,18 +57,18 @@ export default function HomePage() {
 
       </header>
 
-      {/* Hero Section */}
+      {/* Hero */}
       <main className="flex-1 flex items-center justify-center">
 
         <div className="text-center max-w-xl space-y-6">
 
-          <h2 className="text-4xl font-bold tracking-tight">
+          <h2 className="text-4xl font-bold">
             AI-Powered JAMB Tutorial Platform
           </h2>
 
           <p className="text-gray-600">
-            Hammet helps tutors identify weak topics across their
-            students and focus teaching where it matters most.
+            Hammet helps tutors identify weak topics across students
+            and focus teaching where it matters most.
           </p>
 
           <div className="flex justify-center gap-4">
@@ -56,7 +82,7 @@ export default function HomePage() {
 
             <Link
               href="/login"
-              className="bg-white border px-6 py-3 rounded-lg hover:bg-gray-50"
+              className="border px-6 py-3 rounded-lg hover:bg-gray-50"
             >
               Sign In
             </Link>
@@ -67,7 +93,6 @@ export default function HomePage() {
 
       </main>
 
-      {/* Footer */}
       <footer className="text-center text-sm text-gray-400 pb-6">
         © {new Date().getFullYear()} Hammet Labs
       </footer>
