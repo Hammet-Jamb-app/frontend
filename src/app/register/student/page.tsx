@@ -41,7 +41,7 @@ export default function StudentRegisterPage() {
         password,
         inviteToken
       )
-      setSuccess("Registration successful")
+      setSuccess("Registration successful. Check your email for verification link")
     } catch (err: any) {
       setError(err.message)
     } finally {

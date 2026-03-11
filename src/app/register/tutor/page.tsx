@@ -9,6 +9,7 @@ export default function TutorRegisterPage() {
     const [password, setPassword] = useState("")
     const [inviteLink, setInviteLink] = useState("")
     const [error, setError] = useState("")
+    const [success, setSuccess] = useState("")
     const [loading, setLoading] = useState(false)
 
     const handleSubmit = async (
@@ -31,6 +32,7 @@ export default function TutorRegisterPage() {
             const res = await registerTutor(
                 email, password
             )
+            setSuccess(res.message || "Registration Successful. Check your email for verification link")
             setInviteLink(res.invite_link || "")
         } catch (err: any) {
             setError(err.message)
@@ -72,6 +74,12 @@ export default function TutorRegisterPage() {
                         {error}
                     </p>
                 )}
+
+                {(success && (
+                    <p className="text-green-500 text-sm">
+                        {success}
+                    </p>
+                ))}
 
                 <button
                     type="submit"
