@@ -15,15 +15,17 @@ export default function TutorRegisterPage() {
         e: React.SyntheticEvent<HTMLFormElement>
     ) => {
         e.preventDefault()
-        setLoading(true)
-        setError("")
-
+        
         const passwordError = validatePassword(password)
 
         if (passwordError) {
             setError(passwordError)
+            setLoading(false)
             return 
         }
+
+        setLoading(true)
+        setError("")
 
         try {
             const res = await registerTutor(
