@@ -22,4 +22,5 @@ export interface TutorSummaryResponse {
   topics_needing_attention: number
   weakest_topic: TopicSummary | null
   strongest_topic: TopicSummary | null
+  invite_link: string
 }

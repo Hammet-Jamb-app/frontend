@@ -23,6 +23,17 @@ export default function TutorDashboard() {
     fetchSummary()
   }, [])
 
+  const copyInvite = async () => {
+    if (!summary?.invite_link) return
+
+    try {
+      await navigator.clipboard.writeText(summary.invite_link)
+      alert("Invite link copied!")
+    } catch (err) {
+      console.error("Copy failed", err)
+    }
+  }
+
   if (loading) return <div className="p-8">Loading...</div>
   if (!summary) return <div className="p-8">No data</div>
 
@@ -33,6 +44,24 @@ export default function TutorDashboard() {
       <h1 className="text-2xl font-bold">
         Tutor Dashboard
       </h1>
+      
+      <div className="bg-white border rounded-xl shadow-sm p-6 flex items-center justify-between">
+        <div>
+          <p className="text-sm text-gray-500">
+            Invite Students
+          </p>
+          <p className="text-sm text-gray-400">
+            Copy your invite link and share it with students.
+          </p>
+        </div>
+
+        <button
+          onClick={copyInvite}
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        >
+          Copy Invite Link
+        </button>
+      </div>
 
       {/* KPI Cards */}
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">

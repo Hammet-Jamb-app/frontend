@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState } from "react"
 import { UserRole } from "@/types/auth"
 import { decodeToken, getToken, saveToken, removeToken } from "@/utils/token"
+import { useRouter } from "next/navigation"
 
 interface AuthContextType {
     role: UserRole | null
@@ -18,10 +19,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [userId, setUserId] = useState<string | null>(null)
     const [mounted, setMounted] = useState(false)
 
+    const router = useRouter()
+
     useEffect(() => {
         setMounted(true)
 
         const token = getToken()
+
+        if (!token) {
+            router.push("/login")
+        }
 
         if (token) {
             const decoded = decodeToken(token)
@@ -45,6 +52,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         removeToken()
         setRole(null)
         setUserId(null)
+        router.push("/login")
     }
 
     if (!mounted) return null
